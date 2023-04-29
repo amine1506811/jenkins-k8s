@@ -1,0 +1,28 @@
+
+ 
+
+jobs:
+  - script: >
+      folder('my-veterinary-ms')
+  - script: >
+      pipelineJob('my-veterinary-ms/ci') {
+        parameters {
+          booleanParam('RUN_TESTS', true, 'uncheck to disable tests')
+          stringParam('VERSION', '1.0', 'my version')
+        }
+        definition {
+          cpsScm {
+            scriptPath('Jenkinsfile')
+            scm {
+              git {
+                remote {
+                  credentials('github-cred')
+                  url('https://github.com/amine1506811/jenkins-k8s.git')
+                }
+                branch('*/main')
+              }
+            }
+            lightweight(true)
+          }
+        }
+      }
